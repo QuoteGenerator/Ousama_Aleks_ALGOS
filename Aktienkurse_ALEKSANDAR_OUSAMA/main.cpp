@@ -20,7 +20,7 @@ void DELETE_h(AktienHashTabelle& aktien_h);
 void IMPORT_h(AktienHashTabelle& aktien_h);
 std::vector<kursDaten_STRUCT> extractData();
 void SEARCH_h(AktienHashTabelle& aktien_h);
-//void PLOT_h(AktienHashTabelle& aktien_h);
+void PLOT_h(AktienHashTabelle& aktien_h);
 
 void QUIT();
 void clearTerminal();
@@ -41,7 +41,7 @@ int main()
     while(1){
         //clearTerminal();
         std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (8): QUIT; (10): DEBUG;\n" << std::endl;
-        std::cout << "Waehlen Sie aus: "; std::cin >> eingabe;
+        std::cout << "Auswaehlen: "; std::cin >> eingabe;
         std::cin.ignore();
         switch(eingabe){
             case 1:
@@ -65,7 +65,9 @@ int main()
             break;
 
             case 5:
-                PLOT(aktien); break;
+                PLOT_h(aktien_h);
+                //PLOT(aktien);
+            break;
 
             case 8:
                 QUIT();
@@ -75,6 +77,10 @@ int main()
             case 10:
                 DEBUG(aktien);
             break;
+
+            default:
+
+                break;
         }
     }
     return 0;
@@ -87,35 +93,34 @@ void ADD_h(AktienHashTabelle& aktien_h){
     std::string aktienKuerzel = "";
     std::string WKN = "0";
 
-    std::cout << "Geben Sie den Namen der Aktie an: "; std::cin >> aktienName;
+    std::cout << "Aktie Name: "; std::cin >> aktienName;
     std::cout << std::endl;
 
-    std::cout << "Geben Sie den Kuerzel der Aktie an: "; std::cin >> aktienKuerzel;
+    std::cout << "Aktie Kuerzel: "; std::cin >> aktienKuerzel;
     std::cout << std::endl;
 
-    std::cout << "Geben Sie die WKN an: "; std::cin >> WKN;
+    std::cout << "Aktie WKN: "; std::cin >> WKN;
     std::cout << std::endl;
 
     Aktie neueAktie(aktienName, aktienKuerzel, WKN);
 
     if(aktien_h.insert(neueAktie)){
-        std::cout << "Folgende Aktie wurde hinzugefuegt: "
-                  << neueAktie.getName() << std::endl;
+        std::cout << "Diese Aktie wurde hinzugefuegt: " << neueAktie.getName() << std::endl;
     } else {
-        std::cout << "Aktie konnte nicht hinzugefuegt werden!" << std::endl;
+        std::cout << "Die gegebene Aktie konnte nicht gefunden werden!!!!!!!!!!!!!!!!" << std::endl;
     }
 }
 void DELETE_h(AktienHashTabelle& aktien_h){
     std::string kuerzel = "";
 
-    std::cout << "Geben Sie das Kuerzel der Aktie ein: ";
+    std::cout << "Kuerzel der Aktie: ";
     std::cin >> kuerzel;
     std::cout << std::endl;
 
     if(aktien_h.remove(kuerzel)){
-        std::cout << "Aktie wurde geloescht." << std::endl;
+        std::cout << "Aktie wurde geloescht!" << std::endl;
     } else {
-        std::cout << "Aktie wurde nicht gefunden." << std::endl;
+        std::cout << "Aktie wurde nicht gefunden!, bruh..." << std::endl;
     }
 }
 
@@ -123,14 +128,14 @@ void IMPORT_h(AktienHashTabelle& aktien_h){
 
     std::string kuerzel = "";
 
-    std::cout << "Geben Sie das Kuerzel der Aktie ein: ";
+    std::cout << "Kuerzel der Aktie: ";
     std::cin >> kuerzel;
     std::cout << std::endl;
 
     Aktie* aktie = aktien_h.searchByKuerzel(kuerzel);
 
     if(aktie == nullptr){
-        std::cout << "Aktie nicht gefunden!\n";
+        std::cout << "Aktie nicht gefunden!, damn, sad life.\n";
         return;
     }
 
@@ -138,7 +143,7 @@ void IMPORT_h(AktienHashTabelle& aktien_h){
 
     aktie->updateKursDaten(daten);
 
-    std::cout << "Kursdaten importiert.\n";
+    std::cout << "Das Importieren hat geklappt, lesss gooo!\n";
 }
 
 void SEARCH_h(AktienHashTabelle& aktien_h){
@@ -147,19 +152,19 @@ void SEARCH_h(AktienHashTabelle& aktien_h){
 
     std::cout << "\n(1): Suche nach Kuerzel\n";
     std::cout << "(2): Suche nach Name\n";
-    std::cout << "Waehlen Sie aus: ";
+    std::cout << "Auswaehlen: ";
     std::cin >> suchart;
 
     if(suchart == 1){
         std::string kuerzel = "";
-        std::cout << "Geben Sie das Kuerzel ein: ";
+        std::cout << "Kuerzel der Aktie: ";
         std::cin >> kuerzel;
 
         aktie = aktien_h.searchByKuerzel(kuerzel);
     }
     else if(suchart == 2){
         std::string name = "";
-        std::cout << "Geben Sie den Namen ein: ";
+        std::cout << "Name der Aktie: ";
         std::cin >> name;
 
         aktie = aktien_h.searchByName(name);
@@ -192,11 +197,47 @@ void SEARCH_h(AktienHashTabelle& aktien_h){
         std::cout << aktuellsterKurs.low << std::endl;
     }
     else{
-        std::cout << "Keine Kursdaten vorhanden!\n";
+        std::cout << "Kursdaten, NOT vorhanden\n";
     }
 }
 
 void PLOT_h(AktienHashTabelle& aktien_h){
+    std::string kuerzel;
+
+    std::cout << "Kuerzel der Aktie: ";
+    std::cin >> kuerzel;
+
+    Aktie* aktie = aktien_h.searchByKuerzel(kuerzel);
+
+    if(aktie == nullptr){
+        std::cout << "Alle Aktien sind verschwunden, keine zu finden!\n";
+        return;
+    }
+
+    std::vector<kursDaten_STRUCT> kurse = aktie->getKursDaten();
+
+    if(kurse.empty()){
+        std::cout << "Keine Kursdaten vorhanden!\n";
+        return;
+    }
+
+    std::cout << "\nASCII-Grafik der Schlusskurse von " << aktie->getName() << ":\n";
+
+    int scale = 4;
+
+    for(size_t i = 0; i < kurse.size(); i++){ //nicht i < 30 gemacht, weil csv datei, nicht einen ganzen monat hat, sondern nur von 01.03.-16.03.
+        std::string bar;
+
+        int length = static_cast<int>(kurse[i].close / scale); // von float zu integer, also z.B. 62,55 wird zu 62   ------ ist etwas cleaner ;) :D ;D :|
+
+        for(int j = 0; j < length; j++){
+            bar += '#';
+        }
+
+        std::cout << kurse[i].date << " " << kurse[i].close << " " << bar << std::endl;
+    }
+
+    std::cout << std::endl;
 }
 
 
