@@ -21,6 +21,7 @@ class AktienHashTabelle
     public:
         AktienHashTabelle();
         bool insert(Aktie& aktie);
+        bool remove(std::string kuerzel);
 
     private:
         static const int TABLE_SIZE = 2003;
@@ -28,6 +29,8 @@ class AktienHashTabelle
 
         int hashFunction(std::string& key);
         int probeIndex(std::string& key, int i);
+
+
 };
 
 #endif

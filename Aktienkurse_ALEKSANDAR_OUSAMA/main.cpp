@@ -14,7 +14,7 @@ void SEARCH(std::vector<Aktie>& aktien);
 void PLOT(std::vector<Aktie>& aktien);
 
 void ADD_h(AktienHashTabelle& aktien_h);
-//void DELETE_h(AktienHashTabelle& aktien_h);
+void DELETE_h(AktienHashTabelle& aktien_h);
 //void IMPORT_h(AktienHashTabelle& aktien_h);
 //void SEARCH_h(AktienHashTabelle& aktien_h);
 //void PLOT_h(AktienHashTabelle& aktien_h);
@@ -47,7 +47,8 @@ int main()
             break;
 
             case 2:
-                DELETE(aktien);
+                //DELETE(aktien);
+                DELETE_h(aktien_h);
             break;
 
             case 3:
@@ -100,7 +101,19 @@ void ADD_h(AktienHashTabelle& aktien_h){
     }
 }
 void DELETE_h(AktienHashTabelle& aktien_h){
+    std::string kuerzel = "";
+
+    std::cout << "Geben Sie das Kuerzel der Aktie ein: ";
+    std::cin >> kuerzel;
+    std::cout << std::endl;
+
+    if(aktien_h.remove(kuerzel)){
+        std::cout << "Aktie wurde geloescht." << std::endl;
+    } else {
+        std::cout << "Aktie wurde nicht gefunden." << std::endl;
+    }
 }
+
 void IMPORT_h(AktienHashTabelle& aktien_h){
 }
 void SEARCH_h(AktienHashTabelle& aktien_h){
