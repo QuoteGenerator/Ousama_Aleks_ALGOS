@@ -82,13 +82,23 @@ Aktie* AktienHashTabelle::searchByKuerzel(std::string kuerzel)
 Aktie* AktienHashTabelle::searchByName(std::string name) //keine lust eine hash funktion einzubauen, mit name, somit wird einfach durchgelaufen durch ganzen table
 {
     for(int i = 0; i < TABLE_SIZE; i++){
-        if(table[i].status == OCCUPIED &&
-           table[i].aktie.getName() == name){
+        if(table[i].status == OCCUPIED && table[i].aktie.getName() == name){
             return &table[i].aktie;
         }
     }
 
     return nullptr;
 }
+std::vector<Aktie> AktienHashTabelle::getAllAktien()
+{
+    std::vector<Aktie> result;
 
+    for(int i = 0; i < TABLE_SIZE; i++){
+        if(table[i].status == OCCUPIED){
+            result.push_back(table[i].aktie);
+        }
+    }
+
+    return result;
+}
 

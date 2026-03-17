@@ -25,6 +25,8 @@ class AktienHashTabelle
 
         Aktie* searchByKuerzel(std::string kuerzel); //Aktie Pointer
         Aktie* searchByName(std::string name); //Aktie Pointer
+
+        std::vector<Aktie> getAllAktien(); //<---- nötig für das Speichern in einer Datei
     private:
         static const int TABLE_SIZE = 2003;
         std::vector<HashSlot> table;

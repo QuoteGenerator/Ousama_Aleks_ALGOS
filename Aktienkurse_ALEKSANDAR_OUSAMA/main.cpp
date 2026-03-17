@@ -21,6 +21,7 @@ void IMPORT_h(AktienHashTabelle& aktien_h);
 std::vector<kursDaten_STRUCT> extractData();
 void SEARCH_h(AktienHashTabelle& aktien_h);
 void PLOT_h(AktienHashTabelle& aktien_h);
+void SAVE_h(AktienHashTabelle& aktien_h);
 
 void QUIT();
 void clearTerminal();
@@ -40,7 +41,7 @@ int main()
     int eingabe = 0;
     while(1){
         //clearTerminal();
-        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (8): QUIT; (10): DEBUG;\n" << std::endl;
+        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (6): SAVE DATA; (8): QUIT; (10): DEBUG;\n" << std::endl;
         std::cout << "Auswaehlen: "; std::cin >> eingabe;
         std::cin.ignore();
         switch(eingabe){
@@ -67,6 +68,10 @@ int main()
             case 5:
                 PLOT_h(aktien_h);
                 //PLOT(aktien);
+            break;
+
+            case 6:
+                SAVE_h(aktien_h);
             break;
 
             case 8:
@@ -240,7 +245,30 @@ void PLOT_h(AktienHashTabelle& aktien_h){
     std::cout << std::endl;
 }
 
+void SAVE_h(AktienHashTabelle& aktien_h){
+    std::string filename = "";
 
+    std::cout << "Wo soll es gespeichert werden. SAG!: ";
+    std::cin >> filename;
+    std::cout << std::endl;
+
+    std::ofstream file(filename);
+
+    if(!file){
+        std::cout << "KEINE RECHTE! SOMIT NICHT KREIRT/GEFUNDEN, ODER ETWAS ANDERS, anderes..., ODER ODER.... idk" << std::endl;
+        return;
+    }
+
+    std::vector<Aktie> alleAktien = aktien_h.getAllAktien();
+
+    for(int i = 0; i < alleAktien.size(); i++){
+        file << alleAktien[i].getName() << ";" << alleAktien[i].getKuerzel() << ";" << alleAktien[i].getWKN() << std::endl;
+    }
+
+    file.close();
+
+    std::cout << "Hashtabelle ist an einem sicheren ort (GESPEICHERT) :D !" << std::endl;
+}
 
 
 
