@@ -22,6 +22,7 @@ std::vector<kursDaten_STRUCT> extractData();
 void SEARCH_h(AktienHashTabelle& aktien_h);
 void PLOT_h(AktienHashTabelle& aktien_h);
 void SAVE_h(AktienHashTabelle& aktien_h);
+void LOAD_h(AktienHashTabelle& aktien_h);
 
 void QUIT();
 void clearTerminal();
@@ -37,11 +38,11 @@ int main()
     AktienHashTabelle aktien_h;
 
 
-    //Menu
+    //Menu Game Menu Menu menu MeNu unem UNEM UNEMMMM a² + b² = c²
     int eingabe = 0;
     while(1){
         //clearTerminal();
-        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (6): SAVE DATA; (8): QUIT; (10): DEBUG;\n" << std::endl;
+        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (6): SAVE DATA; (7): LOAD DATA; (8): QUIT;\n" << std::endl; //(10): DEBUG; wurde genutzt bei erstem Teil des Projekts
         std::cout << "Auswaehlen: "; std::cin >> eingabe;
         std::cin.ignore();
         switch(eingabe){
@@ -72,6 +73,10 @@ int main()
 
             case 6:
                 SAVE_h(aktien_h);
+            break;
+
+            case 7:
+                LOAD_h(aktien_h);
             break;
 
             case 8:
@@ -268,6 +273,42 @@ void SAVE_h(AktienHashTabelle& aktien_h){
     file.close();
 
     std::cout << "Hashtabelle ist an einem sicheren ort (GESPEICHERT) :D !" << std::endl;
+}
+
+void LOAD_h(AktienHashTabelle& aktien_h){
+    std::string filename = "";
+
+    std::cout << "Wie heißt die Datei?: ";
+    std::cin >> filename;
+    std::cout << std::endl;
+
+    std::ifstream file(filename);
+
+    if(!file){
+        std::cout << "Datei gibt es nicht, probably schreibfehler oder so..... BITTE 100% GEORG RICHTER für diese Abgabe... DANKE :-D " << std::endl;
+        return;
+    }
+
+    std::string line = "";
+
+    while(std::getline(file, line)){
+        std::stringstream ss(line);
+
+        std::string name = "";
+        std::string kuerzel = "";
+        std::string wkn = "";
+
+        std::getline(ss, name, ';');
+        std::getline(ss, kuerzel, ';');
+        std::getline(ss, wkn, ';');
+
+        Aktie neueAktie(name, kuerzel, wkn);
+        aktien_h.insert(neueAktie);
+    }
+
+    file.close();
+
+    std::cout << "ALLE AKTIEN WURDEN GELADEN, bzw. DIE HASHTABELLLLLLEEEEEEEEEE!!!" << std::endl;
 }
 
 
