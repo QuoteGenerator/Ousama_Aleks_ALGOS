@@ -18,8 +18,10 @@ void DEBUG(std::vector<Aktie>& aktien); //NICHT WICHTIG!!!
 
 int main()
 {
+    //Liste von Aktien Objekten
     std::vector<Aktie> aktien;
 
+    //Menu
     int eingabe = 0;
     while(1){
         //clearTerminal();
@@ -50,12 +52,12 @@ int main()
             case 10:
                 DEBUG(aktien);
             break;
-
         }
     }
     return 0;
 }
 
+//
 void ADD(std::vector<Aktie>& aktien){
     std::string aktienName = "";
     std::string aktienKuerzel = "";
@@ -142,12 +144,8 @@ std::vector<kursDaten_STRUCT> extractData(){
             daten.push_back(kursDaten);
             entry = false;
         }
-
-
     }
-
     return daten;
-
 }
 
 void IMPORT(std::vector<Aktie>& aktien){

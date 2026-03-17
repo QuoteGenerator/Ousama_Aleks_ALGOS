@@ -1,8 +1,7 @@
 #include "Aktie.h"
 #include <string>
 
-Aktie::Aktie(std::string name, std::string kuerzel, std::string WKN)
-{
+Aktie::Aktie(std::string name, std::string kuerzel, std::string WKN){
     m_name = name;
     m_kuerzel = kuerzel;
     m_WKN = WKN;
