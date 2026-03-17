@@ -23,6 +23,8 @@ class AktienHashTabelle
         bool insert(Aktie& aktie);
         bool remove(std::string kuerzel);
 
+        Aktie* searchByKuerzel(std::string kuerzel); //Aktie Pointer
+        Aktie* searchByName(std::string name); //Aktie Pointer
     private:
         static const int TABLE_SIZE = 2003;
         std::vector<HashSlot> table;

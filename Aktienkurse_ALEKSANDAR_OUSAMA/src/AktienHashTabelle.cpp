@@ -60,3 +60,35 @@ bool AktienHashTabelle::remove(std::string kuerzel)
 
     return false;
 }
+
+Aktie* AktienHashTabelle::searchByKuerzel(std::string kuerzel)
+{
+    for(int i = 0; i < TABLE_SIZE; i++){
+        int index = probeIndex(kuerzel, i);
+
+        if(table[index].status == EMPTY){
+            return nullptr;
+        }
+
+        if(table[index].status == OCCUPIED &&
+           table[index].aktie.getKuerzel() == kuerzel){
+            return &table[index].aktie;
+        }
+    }
+
+    return nullptr;
+}
+
+Aktie* AktienHashTabelle::searchByName(std::string name) //keine lust eine hash funktion einzubauen, mit name, somit wird einfach durchgelaufen durch ganzen table
+{
+    for(int i = 0; i < TABLE_SIZE; i++){
+        if(table[i].status == OCCUPIED &&
+           table[i].aktie.getName() == name){
+            return &table[i].aktie;
+        }
+    }
+
+    return nullptr;
+}
+
+

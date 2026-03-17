@@ -13,10 +13,13 @@ void IMPORT(std::vector<Aktie>& aktien);
 void SEARCH(std::vector<Aktie>& aktien);
 void PLOT(std::vector<Aktie>& aktien);
 
+
+
 void ADD_h(AktienHashTabelle& aktien_h);
 void DELETE_h(AktienHashTabelle& aktien_h);
-//void IMPORT_h(AktienHashTabelle& aktien_h);
-//void SEARCH_h(AktienHashTabelle& aktien_h);
+void IMPORT_h(AktienHashTabelle& aktien_h);
+std::vector<kursDaten_STRUCT> extractData();
+void SEARCH_h(AktienHashTabelle& aktien_h);
 //void PLOT_h(AktienHashTabelle& aktien_h);
 
 void QUIT();
@@ -47,16 +50,18 @@ int main()
             break;
 
             case 2:
-                //DELETE(aktien);
                 DELETE_h(aktien_h);
+                //DELETE(aktien);
             break;
 
             case 3:
-                IMPORT(aktien);
+                IMPORT_h(aktien_h);
+                //IMPORT(aktien);
             break;
 
             case 4:
-                SEARCH(aktien);
+                SEARCH_h(aktien_h);
+                //SEARCH(aktien);
             break;
 
             case 5:
@@ -115,9 +120,82 @@ void DELETE_h(AktienHashTabelle& aktien_h){
 }
 
 void IMPORT_h(AktienHashTabelle& aktien_h){
+
+    std::string kuerzel = "";
+
+    std::cout << "Geben Sie das Kuerzel der Aktie ein: ";
+    std::cin >> kuerzel;
+    std::cout << std::endl;
+
+    Aktie* aktie = aktien_h.searchByKuerzel(kuerzel);
+
+    if(aktie == nullptr){
+        std::cout << "Aktie nicht gefunden!\n";
+        return;
+    }
+
+    std::vector<kursDaten_STRUCT> daten = extractData();
+
+    aktie->updateKursDaten(daten);
+
+    std::cout << "Kursdaten importiert.\n";
 }
+
 void SEARCH_h(AktienHashTabelle& aktien_h){
+    int suchart = 0;
+    Aktie* aktie = nullptr;
+
+    std::cout << "\n(1): Suche nach Kuerzel\n";
+    std::cout << "(2): Suche nach Name\n";
+    std::cout << "Waehlen Sie aus: ";
+    std::cin >> suchart;
+
+    if(suchart == 1){
+        std::string kuerzel = "";
+        std::cout << "Geben Sie das Kuerzel ein: ";
+        std::cin >> kuerzel;
+
+        aktie = aktien_h.searchByKuerzel(kuerzel);
+    }
+    else if(suchart == 2){
+        std::string name = "";
+        std::cout << "Geben Sie den Namen ein: ";
+        std::cin >> name;
+
+        aktie = aktien_h.searchByName(name);
+    }
+    else{
+        std::cout << "Ungueltige Eingabe!\n";
+        return;
+    }
+
+    if(aktie == nullptr){
+        std::cout << "Aktie nicht gefunden!\n";
+        return;
+    }
+
+    std::vector<kursDaten_STRUCT> daten = aktie->getKursDaten();
+
+    std::cout << "\nName: " << aktie->getName() << std::endl;
+    std::cout << "Kuerzel: " << aktie->getKuerzel() << std::endl;
+    std::cout << "WKN: " << aktie->getWKN() << std::endl;
+    std::cout << "date, close, volume, open, high, low" << std::endl;
+
+    if(!daten.empty()){
+        kursDaten_STRUCT aktuellsterKurs = daten.front();
+
+        std::cout << aktuellsterKurs.date << " ";
+        std::cout << aktuellsterKurs.close << " ";
+        std::cout << aktuellsterKurs.volume << " ";
+        std::cout << aktuellsterKurs.open << " ";
+        std::cout << aktuellsterKurs.high << " ";
+        std::cout << aktuellsterKurs.low << std::endl;
+    }
+    else{
+        std::cout << "Keine Kursdaten vorhanden!\n";
+    }
 }
+
 void PLOT_h(AktienHashTabelle& aktien_h){
 }
 
