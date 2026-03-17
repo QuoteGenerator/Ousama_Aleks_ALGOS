@@ -25,9 +25,9 @@ std::vector<kursDaten_STRUCT> Aktie::getKursDaten(){
     return m_kurse;
 }
 
-std::string Aktie::getWKN(){ //<----------- neu
+std::string Aktie::getWKN(){
     return m_WKN;
 }
-std::string Aktie::getKuerzel(){ //<----------- neu
+std::string Aktie::getKuerzel(){
     return m_kuerzel;
 }

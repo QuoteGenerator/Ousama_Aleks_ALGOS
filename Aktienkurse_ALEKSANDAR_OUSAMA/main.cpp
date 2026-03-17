@@ -32,8 +32,8 @@ void DEBUG(std::vector<Aktie>& aktien); //NICHT WICHTIG!!!
 
 int main()
 {
-    //Liste von Aktien Objekten
-    std::vector<Aktie> aktien;
+    //Liste von Aktien Objekten -> nicht nötig
+    //std::vector<Aktie> aktien;
 
     AktienHashTabelle aktien_h;
 
@@ -98,7 +98,7 @@ int main()
 
 
 
-void ADD_h(AktienHashTabelle& aktien_h){
+void ADD_h(AktienHashTabelle& aktien_h){ //in hash tabelle konstruktor erstellen mit Aktie und enum
     std::string aktienName = "";
     std::string aktienKuerzel = "";
     std::string WKN = "0";
@@ -117,10 +117,10 @@ void ADD_h(AktienHashTabelle& aktien_h){
     if(aktien_h.insert(neueAktie)){
         std::cout << "Diese Aktie wurde hinzugefuegt: " << neueAktie.getName() << std::endl;
     } else {
-        std::cout << "Die gegebene Aktie konnte nicht gefunden werden!!!!!!!!!!!!!!!!" << std::endl;
+        std::cout << "AKTIE EXISTIERT BEREITSSSSSSSSSSSSSSSS" << std::endl;
     }
 }
-void DELETE_h(AktienHashTabelle& aktien_h){
+void DELETE_h(AktienHashTabelle& aktien_h){ //Aktie löschen! (nicht wortwörtlich, sondern nur enum zu Deleted stellen)
     std::string kuerzel = "";
 
     std::cout << "Kuerzel der Aktie: ";
@@ -134,7 +134,7 @@ void DELETE_h(AktienHashTabelle& aktien_h){
     }
 }
 
-void IMPORT_h(AktienHashTabelle& aktien_h){
+void IMPORT_h(AktienHashTabelle& aktien_h){ //Kurse der Aktie einfügen extractData wird dabei gebraucht um structs zu speichern, die die information dann haben der Kurse
 
     std::string kuerzel = "";
 
@@ -156,7 +156,7 @@ void IMPORT_h(AktienHashTabelle& aktien_h){
     std::cout << "Das Importieren hat geklappt, lesss gooo!\n";
 }
 
-std::string readFile(){
+std::string readFile(){ //wird ausgeführt durch extractData
     std::string filename;
     std::cout << "Geben Sie den Pfad zur Aktie: "; std::cin >> filename; std::cout << std::endl;
 
@@ -178,7 +178,7 @@ std::string readFile(){
     return std::string();
 }
 
-std::vector<kursDaten_STRUCT> extractData(){
+std::vector<kursDaten_STRUCT> extractData(){ //hier werden die Daten in ein Vector befüllt mit Structs (gespeichert) der dann in einer methode der Aktie die Aktie befüllt
     int reserveAmount = 30;
     kursDaten_STRUCT kursDaten;
     std::vector<kursDaten_STRUCT> daten;
@@ -221,7 +221,7 @@ std::vector<kursDaten_STRUCT> extractData(){
     return daten;
 }
 
-void SEARCH_h(AktienHashTabelle& aktien_h){
+void SEARCH_h(AktienHashTabelle& aktien_h){ //nach einem kurs suchen mit kürzel oder name und information printen mithilfe der Vektoren Methode .front()
     int suchart = 0;
     Aktie* aktie = nullptr;
 
@@ -276,7 +276,7 @@ void SEARCH_h(AktienHashTabelle& aktien_h){
     }
 }
 
-void PLOT_h(AktienHashTabelle& aktien_h){
+void PLOT_h(AktienHashTabelle& aktien_h){ //einen Balkendiagramm erstellen mit den Kursen der Aktie (max 30 Tage)
     std::string kuerzel;
 
     std::cout << "Kuerzel der Aktie: ";
@@ -315,7 +315,7 @@ void PLOT_h(AktienHashTabelle& aktien_h){
     std::cout << std::endl;
 }
 
-void SAVE_h(AktienHashTabelle& aktien_h){
+void SAVE_h(AktienHashTabelle& aktien_h){ //aktien speichern in einer datei
     std::string filename = "";
 
     std::cout << "Wo soll es gespeichert werden. SAG!: ";
@@ -340,7 +340,7 @@ void SAVE_h(AktienHashTabelle& aktien_h){
     std::cout << "Hashtabelle ist an einem sicheren ort (GESPEICHERT) :D !" << std::endl;
 }
 
-void LOAD_h(AktienHashTabelle& aktien_h){
+void LOAD_h(AktienHashTabelle& aktien_h){ //zeilen auslesen einer Datei und die Aktien erstellen mit name, kürzel, wkn
     std::string filename = "";
 
     std::cout << "Wie heißt die Datei?: ";
@@ -376,7 +376,7 @@ void LOAD_h(AktienHashTabelle& aktien_h){
     std::cout << "ALLE AKTIEN WURDEN GELADEN, bzw. DIE HASHTABELLLLLLEEEEEEEEEE!!!" << std::endl;
 }
 
-void QUIT(){
+void QUIT(){ //Programm wird nach diese QUIT funktion beendet, da return in case drinnen ist
     std::cout << "Goodbye!!!";
 }
 

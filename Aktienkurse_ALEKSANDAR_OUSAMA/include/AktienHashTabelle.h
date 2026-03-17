@@ -23,16 +23,16 @@ class AktienHashTabelle
         bool insert(Aktie& aktie);
         bool remove(std::string kuerzel);
 
-        Aktie* searchByKuerzel(std::string kuerzel); //Aktie Pointer
-        Aktie* searchByName(std::string name); //Aktie Pointer
+        Aktie* searchByKuerzel(std::string kuerzel); //Aktie Pointer (Keine Kopie geben)
+        Aktie* searchByName(std::string name); //Aktie Pointer (Keine Kopie geben)
 
-        std::vector<Aktie> getAllAktien(); //<---- nötig für das Speichern in einer Datei
+        std::vector<Aktie> getAllAktien();
     private:
         static const int TABLE_SIZE = 2003;
-        std::vector<HashSlot> table;
+        std::vector<HashSlot> table; //hash tabelle
 
         int hashFunction(std::string& key);
-        int probeIndex(std::string& key, int i);
+        int sondierungsIndex(std::string& key, int i);
 
 
 };
