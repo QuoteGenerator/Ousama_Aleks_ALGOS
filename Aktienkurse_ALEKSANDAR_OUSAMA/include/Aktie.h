@@ -25,6 +25,9 @@ class Aktie
 
         std::vector<kursDaten_STRUCT> getKursDaten();
 
+        std::string getWKN(); //<--------------- neu
+        std::string getKuerzel(); //<----------- neu
+
 
     private:
         std::string m_name;

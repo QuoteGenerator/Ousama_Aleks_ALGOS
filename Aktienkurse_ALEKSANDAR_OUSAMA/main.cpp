@@ -9,6 +9,7 @@
 void ADD(std::vector<Aktie>& aktien);
 void DELETE(std::vector<Aktie>& aktien);
 void IMPORT(std::vector<Aktie>& aktien);
+void SEARCH(std::vector<Aktie>& aktien);
 void PLOT(std::vector<Aktie>& aktien);
 void QUIT();
 void clearTerminal();
@@ -25,7 +26,7 @@ int main()
     int eingabe = 0;
     while(1){
         //clearTerminal();
-        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (5): PLOT; (8): QUIT; (10): DEBUG;\n" << std::endl;
+        std::cout << "\n(1): ADD; (2): DELETE; (3): IMPORT; (4): SEARCH; (5): PLOT; (8): QUIT; (10): DEBUG;\n" << std::endl;
         std::cout << "Waehlen Sie aus: "; std::cin >> eingabe;
         std::cin.ignore();
         switch(eingabe){
@@ -39,6 +40,10 @@ int main()
 
             case 3:
                 IMPORT(aktien);
+            break;
+
+            case 4:
+                SEARCH(aktien);
             break;
 
             case 5:
@@ -82,6 +87,65 @@ void DELETE(std::vector<Aktie>& aktien){
         }
     }
 }
+
+void SEARCH(std::vector<Aktie>& aktien){
+    int SEARCH_eingabe = 0;
+    std::string gesuchteAktie = "";
+
+    while(1){
+        std::cout << "\n(1): Aktie Zeigen!; (2): SEARCH schliessen;\n" << std::endl;
+        std::cout << "Waehlen Sie aus: ";
+        std::cin >> SEARCH_eingabe;
+
+        if(aktien.empty()){
+            std::cout << "Keine Aktien vorhanden!\n";
+            return;
+        }
+
+        if(SEARCH_eingabe == 1){
+            std::cout << "\nGeben Sie den Namen der Aktie ein: ";
+            std::cin >> gesuchteAktie;
+
+            bool gefunden = false;
+
+            for(auto i = aktien.begin(); i != aktien.end(); i++){
+                if(gesuchteAktie == i->getName()){
+                    gefunden = true;
+
+                    std::cout << i->getName() << std::endl;
+                    std::cout << "date, close, volume, open, high, low" << std::endl;
+
+                    auto daten = i->getKursDaten();
+
+                    if(!daten.empty()){
+                        kursDaten_STRUCT datenpaket = daten.front();
+
+                        std::cout << datenpaket.date << " ";
+                        std::cout << datenpaket.close << " ";
+                        std::cout << datenpaket.volume << " ";
+                        std::cout << datenpaket.open << " ";
+                        std::cout << datenpaket.high << " ";
+                        std::cout << datenpaket.low << std::endl;
+                    } else {
+                        std::cout << "Keine Kursdaten vorhanden!\n";
+                    }
+
+                    break; // wichtig → wir haben sie gefunden
+                }
+            }
+
+            if(!gefunden){
+                std::cout << "Aktie gibt es nicht!\n";
+            }
+        }
+        else if(SEARCH_eingabe == 2){
+            break;
+        }
+    }
+}
+
+
+
 
 std::string readFile(){
     std::string filename;

@@ -18,3 +18,10 @@ void Aktie::updateKursDaten(const std::vector<kursDaten_STRUCT>& kurse){
 std::vector<kursDaten_STRUCT> Aktie::getKursDaten(){
     return m_kurse;
 }
+
+std::string Aktie::getWKN(){ //<----------- neu
+    return m_WKN;
+}
+std::string Aktie::getKuerzel(){ //<----------- neu
+    return m_kuerzel;
+}
