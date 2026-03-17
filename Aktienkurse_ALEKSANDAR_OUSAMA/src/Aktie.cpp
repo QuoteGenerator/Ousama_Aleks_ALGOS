@@ -1,22 +1,21 @@
 #include "Aktie.h"
 #include <string>
 
-Aktie::Aktie(std::string k_name, std::string k_kuerzel, std::string k_WKN)
+Aktie::Aktie(std::string name, std::string kuerzel, std::string WKN)
 {
-    name = k_name;
-    kuerzel = k_kuerzel;
-    WKN = k_WKN;
+    m_name = name;
+    m_kuerzel = kuerzel;
+    m_WKN = WKN;
 }
-
 
 std::string Aktie::getName(){
-    return name;
+    return m_name;
 }
 
-void Aktie::add_kursDaten(kursDaten_STRUCT datenPacket){
-    kurse.push_back(datenPacket);
+void Aktie::updateKursDaten(const std::vector<kursDaten_STRUCT>& kurse){
+    m_kurse = kurse;
 }
 
 std::vector<kursDaten_STRUCT> Aktie::getKursDaten(){
-    return kurse;
+    return m_kurse;
 }

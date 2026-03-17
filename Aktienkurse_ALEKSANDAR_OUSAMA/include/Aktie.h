@@ -6,28 +6,28 @@
 
 struct kursDaten_STRUCT {
     std::string date;
-    double close;
+    float close;
     long volume;
-    double open;
-    double high;
-    double low;
+    float open;
+    float high;
+    float low;
 };
 
 class Aktie
 {
     public:
-        Aktie(std::string k_name, std::string k_kuerzel, std::string k_WKN);
+        Aktie(std::string name, std::string kuerzel, std::string WKN);
         std::string getName();
-        void add_kursDaten(kursDaten_STRUCT datenPacket);
+        void updateKursDaten(const std::vector<kursDaten_STRUCT>& kurse);
         std::vector<kursDaten_STRUCT> getKursDaten();
 
 
     private:
-        std::string name = "KEIN_NAME";
-        std::string kuerzel = "KEIN_KUERZEL";
-        std::string WKN = "0";
+        std::string m_name;
+        std::string m_kuerzel;
+        std::string m_WKN;
 
-        std::vector<kursDaten_STRUCT> kurse;
+        std::vector<kursDaten_STRUCT> m_kurse;
 
 };
 
