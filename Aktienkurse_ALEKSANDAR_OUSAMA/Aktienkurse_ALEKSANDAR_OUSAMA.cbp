@@ -36,8 +36,10 @@
 		</Compiler>
 		<Unit filename="Apple_Aktien_Daten.csv" />
 		<Unit filename="include/Aktie.h" />
+		<Unit filename="include/AktienHashTabelle.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Aktie.cpp" />
+		<Unit filename="src/AktienHashTabelle.cpp" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

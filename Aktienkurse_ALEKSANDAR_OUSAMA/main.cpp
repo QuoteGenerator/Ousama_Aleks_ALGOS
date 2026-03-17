@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Aktie.h"
+#include "AktienHashTabelle.h"
 
 #include <vector>
 #include <fstream>
@@ -11,6 +12,13 @@ void DELETE(std::vector<Aktie>& aktien);
 void IMPORT(std::vector<Aktie>& aktien);
 void SEARCH(std::vector<Aktie>& aktien);
 void PLOT(std::vector<Aktie>& aktien);
+
+void ADD_h(AktienHashTabelle& aktien_h);
+//void DELETE_h(AktienHashTabelle& aktien_h);
+//void IMPORT_h(AktienHashTabelle& aktien_h);
+//void SEARCH_h(AktienHashTabelle& aktien_h);
+//void PLOT_h(AktienHashTabelle& aktien_h);
+
 void QUIT();
 void clearTerminal();
 
@@ -22,6 +30,9 @@ int main()
     //Liste von Aktien Objekten
     std::vector<Aktie> aktien;
 
+    AktienHashTabelle aktien_h;
+
+
     //Menu
     int eingabe = 0;
     while(1){
@@ -31,7 +42,8 @@ int main()
         std::cin.ignore();
         switch(eingabe){
             case 1:
-                ADD(aktien);
+                ADD_h(aktien_h);
+                //ADD(aktien);
             break;
 
             case 2:
@@ -61,6 +73,46 @@ int main()
     }
     return 0;
 }
+
+
+
+void ADD_h(AktienHashTabelle& aktien_h){
+    std::string aktienName = "";
+    std::string aktienKuerzel = "";
+    std::string WKN = "0";
+
+    std::cout << "Geben Sie den Namen der Aktie an: "; std::cin >> aktienName;
+    std::cout << std::endl;
+
+    std::cout << "Geben Sie den Kuerzel der Aktie an: "; std::cin >> aktienKuerzel;
+    std::cout << std::endl;
+
+    std::cout << "Geben Sie die WKN an: "; std::cin >> WKN;
+    std::cout << std::endl;
+
+    Aktie neueAktie(aktienName, aktienKuerzel, WKN);
+
+    if(aktien_h.insert(neueAktie)){
+        std::cout << "Folgende Aktie wurde hinzugefuegt: "
+                  << neueAktie.getName() << std::endl;
+    } else {
+        std::cout << "Aktie konnte nicht hinzugefuegt werden!" << std::endl;
+    }
+}
+void DELETE_h(AktienHashTabelle& aktien_h){
+}
+void IMPORT_h(AktienHashTabelle& aktien_h){
+}
+void SEARCH_h(AktienHashTabelle& aktien_h){
+}
+void PLOT_h(AktienHashTabelle& aktien_h){
+}
+
+
+
+
+
+
 
 //
 void ADD(std::vector<Aktie>& aktien){

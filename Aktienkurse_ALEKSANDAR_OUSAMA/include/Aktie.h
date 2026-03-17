@@ -17,14 +17,15 @@ struct kursDaten_STRUCT {
 class Aktie
 {
     public:
+        Aktie(); //<--neu
         Aktie(std::string name, std::string kuerzel, std::string WKN);
-        std::string getName();
+
 
         //Aktualisiert die Kursdaten (z.B nach Import)
         void updateKursDaten(const std::vector<kursDaten_STRUCT>& kurse);
-
         std::vector<kursDaten_STRUCT> getKursDaten();
 
+        std::string getName();
         std::string getWKN(); //<--------------- neu
         std::string getKuerzel(); //<----------- neu
 
