@@ -85,7 +85,7 @@ int main()
             break;
 
             case 10:
-                DEBUG(aktien);
+                //DEBUG(aktien);
             break;
 
             default:
@@ -154,6 +154,71 @@ void IMPORT_h(AktienHashTabelle& aktien_h){
     aktie->updateKursDaten(daten);
 
     std::cout << "Das Importieren hat geklappt, lesss gooo!\n";
+}
+
+std::string readFile(){
+    std::string filename;
+    std::cout << "Geben Sie den Pfad zur Aktie: "; std::cin >> filename; std::cout << std::endl;
+
+    std::ifstream file(filename, std::ios::binary | std::ios::ate);
+
+    if(!file){
+        exit(1);
+    }
+
+    std::streamsize size = file.tellg();
+    file.seekg(std::ios::beg);
+
+    std::string buffer(size, '\0');
+
+    if(file.read(&buffer[0], size)){
+        return buffer;
+    }
+
+    return std::string();
+}
+
+std::vector<kursDaten_STRUCT> extractData(){
+    int reserveAmount = 30;
+    kursDaten_STRUCT kursDaten;
+    std::vector<kursDaten_STRUCT> daten;
+    daten.reserve(reserveAmount);
+    std::string buffer = readFile();
+
+    int columnAmount = 6;
+    int column = 0;
+    bool entry = false;
+    size_t start = buffer.find('\n') + 1; //skip first line
+    for(size_t i = start; i < buffer.size(); ++i){
+
+        if(buffer[i] == '$'){
+            ++start;
+            continue;
+        }
+
+        if(buffer[i] == ',' || buffer[i] == '\n'){
+            std::string cell = buffer.substr(start, i - start);
+
+            switch (column) {
+                case 0: kursDaten.date = cell; break;
+                case 1: kursDaten.close = std::stof(cell); break;
+                case 2: kursDaten.volume = std::stol(cell); break;
+                case 3: kursDaten.open = std::stof(cell); break;
+                case 4: kursDaten.high = std::stof(cell); break;
+                case 5: kursDaten.low = std::stof(cell); break;
+            }
+
+            column = (column + 1) % columnAmount;
+            start = i + 1;
+            entry = true;
+        }
+
+        if(entry && column % columnAmount == 0){
+            daten.push_back(kursDaten);
+            entry = false;
+        }
+    }
+    return daten;
 }
 
 void SEARCH_h(AktienHashTabelle& aktien_h){
@@ -311,11 +376,14 @@ void LOAD_h(AktienHashTabelle& aktien_h){
     std::cout << "ALLE AKTIEN WURDEN GELADEN, bzw. DIE HASHTABELLLLLLEEEEEEEEEE!!!" << std::endl;
 }
 
+void QUIT(){
+    std::cout << "Goodbye!!!";
+}
 
 
 
 
-//
+/*
 void ADD(std::vector<Aktie>& aktien){
     std::string aktienName = "";
     std::string aktienKuerzel = "";
@@ -400,70 +468,9 @@ void SEARCH(std::vector<Aktie>& aktien){
 
 
 
-std::string readFile(){
-    std::string filename;
-    std::cout << "Geben Sie den Pfad zur Aktie: "; std::cin >> filename; std::cout << std::endl;
 
-    std::ifstream file(filename, std::ios::binary | std::ios::ate);
 
-    if(!file){
-        exit(1);
-    }
 
-    std::streamsize size = file.tellg();
-    file.seekg(std::ios::beg);
-
-    std::string buffer(size, '\0');
-
-    if(file.read(&buffer[0], size)){
-        return buffer;
-    }
-
-    return std::string();
-}
-
-std::vector<kursDaten_STRUCT> extractData(){
-    int reserveAmount = 30;
-    kursDaten_STRUCT kursDaten;
-    std::vector<kursDaten_STRUCT> daten;
-    daten.reserve(reserveAmount);
-    std::string buffer = readFile();
-
-    int columnAmount = 6;
-    int column = 0;
-    bool entry = false;
-    size_t start = buffer.find('\n') + 1; //skip first line
-    for(size_t i = start; i < buffer.size(); ++i){
-
-        if(buffer[i] == '$'){
-            ++start;
-            continue;
-        }
-
-        if(buffer[i] == ',' || buffer[i] == '\n'){
-            std::string cell = buffer.substr(start, i - start);
-
-            switch (column) {
-                case 0: kursDaten.date = cell; break;
-                case 1: kursDaten.close = std::stof(cell); break;
-                case 2: kursDaten.volume = std::stol(cell); break;
-                case 3: kursDaten.open = std::stof(cell); break;
-                case 4: kursDaten.high = std::stof(cell); break;
-                case 5: kursDaten.low = std::stof(cell); break;
-            }
-
-            column = (column + 1) % columnAmount;
-            start = i + 1;
-            entry = true;
-        }
-
-        if(entry && column % columnAmount == 0){
-            daten.push_back(kursDaten);
-            entry = false;
-        }
-    }
-    return daten;
-}
 
 void IMPORT(std::vector<Aktie>& aktien){
 
@@ -512,9 +519,6 @@ void PLOT(std::vector<Aktie>& aktien){
     }
 }
 
-void QUIT(){
-    std::cout << "Goodbye!!!";
-}
 
 
 void DEBUG(std::vector<Aktie>& aktien){
@@ -552,7 +556,7 @@ void clearTerminal(){
         std::cout << "\033[A\r\033[K";
     }
 }
-
+*/
 
 
 
